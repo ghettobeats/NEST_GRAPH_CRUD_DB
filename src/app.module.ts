@@ -7,6 +7,8 @@ import { ItemsModule } from './items/items.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Item } from './items/entities/item.entity';
+import { UsersModule } from './users/users.module';
+import { User } from './users/entities/user.entity';
 
 
 @Module({  
@@ -25,10 +27,11 @@ import { Item } from './items/entities/item.entity';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Item],
+      entities: [Item,User],
       synchronize: true,
     }),
-    ItemsModule ],
+    ItemsModule,
+    UsersModule ],
   controllers: [],
   providers: [],
 })
