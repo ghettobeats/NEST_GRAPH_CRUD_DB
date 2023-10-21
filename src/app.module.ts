@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Item } from './items/entities/item.entity';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({  
@@ -31,7 +32,8 @@ import { User } from './users/entities/user.entity';
       synchronize: true,
     }),
     ItemsModule,
-    UsersModule ],
+    UsersModule,
+    AuthModule ],
   controllers: [],
   providers: [],
 })
