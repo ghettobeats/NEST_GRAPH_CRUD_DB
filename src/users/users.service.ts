@@ -1,5 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserInput } from './dto/inputs/create-user.input';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { UpdateUserInput } from './dto/inputs/update-user.input';
 import { User } from './entities/user.entity';
 import { SignupInput } from 'src/auth/dto/inputs/signup.input';
@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class UsersService {
 
+  private logger:Logger = new Logger('UsersService')
 
   constructor(
     @InjectRepository(User)
@@ -18,11 +19,15 @@ export class UsersService {
   }
   async create(signupInput : SignupInput) : Promise<User>{
    try {
-    const newUser = this.userRepository.create(signupInput)
+    //hashing pass
+    const newUser = this.userRepository.create({
+      ...signupInput,
+      password: bcrypt.hashSync(signupInput.password, 10)
+    })
     return await this.userRepository.save(newUser)
 
    } catch (error) {
-    throw new BadRequestException('algo salio mal')
+    this.handlerDBErrors(error);
    }
   }
 
@@ -30,10 +35,29 @@ export class UsersService {
     return [];
   }
 
-  findOne(id: string) : Promise<User>{
-    throw new Error('method findOne not implement yet');
+  async findOneByEmail(email: string) : Promise<User>{
+   try {
+     return await this.userRepository.findOneByOrFail({email})
+   } catch (error) {
+    throw new NotFoundException(`${email} not found` )
+    // this.handlerDBErrors({
+    //   code: 'error-01',
+    //   detail: `${email} not found`
+    // })
+   }
   }
 
+  async findOneById(id: string) : Promise<User>{
+   try {
+     return await this.userRepository.findOneByOrFail({id})
+   } catch (error) {
+    throw new NotFoundException(`${id} not found` )
+   
+   }
+  }
+  async findOne(id: string) : Promise<User>{
+  throw new Error('method block not implement yet');
+  }
   update(id: number, updateUserInput: UpdateUserInput) {
     return `This action updates a #${id} user`;
   }
@@ -41,4 +65,15 @@ export class UsersService {
   block(id: string): Promise<User> {
     throw new Error('method block not implement yet');
   }
+   private handlerDBErrors(error: any): never{
+  
+    if(error.code === '23505' ){
+      throw new BadRequestException(error.detail.replace('key ',''))
+    }
+    if(error.code==='error-01'){
+       throw new BadRequestException(error.detail.replace('key ',''))
+    }
+    this.logger.error(error);
+    throw new InternalServerErrorException('Please check the server error')
+   }
 }
