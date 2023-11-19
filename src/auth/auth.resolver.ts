@@ -15,25 +15,17 @@ export class AuthResolver {
     ) {}
 
     @Mutation(() => AuthResponse, {name: 'signup' })
-    async signup(
-      @Args('signup') signup: SignupInput 
-      ) : Promise<AuthResponse>{
+    async signup(@Args('signup') signup: SignupInput) : Promise<AuthResponse>{
       return await this.authService.signup(signup);
     }
 
     @Mutation(()=>AuthResponse, {name: 'login' })
-    async login(
-      @Args('loginInput') loginInput: LoginInput
-      ) : Promise<AuthResponse>{
+    async login(@Args('loginInput') loginInput: LoginInput) : Promise<AuthResponse>{
       return await this.authService.login(loginInput);
     } 
     @Query(()=> AuthResponse, {name: 'revalidate' })
     @UseGuards(jwtAuthguard)
-     revalidateToken(
-      @CurrentUser() user: User
-     ) : AuthResponse{
-      // return await this.authService.RevalidateToken();
-      console.log(`revalidated user: `, user)
-      throw new Error('Method not implement yet');
+     async revalidateToken(@CurrentUser() user: User) : Promise<AuthResponse>{
+       return await this.authService.revalidateToken(user);
     }
 }

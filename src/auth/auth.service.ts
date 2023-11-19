@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotImplementedException, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt'
 import { LoginInput, SignupInput } from '../auth/dto/inputs';
 import { AuthResponse } from './dto/types/authResponse';
@@ -44,5 +44,11 @@ export class AuthService {
 
             delete user.password;
             return user;
+    }
+    async revalidateToken(user: User): Promise<AuthResponse>{
+
+        const token  =  await this.getJwtToken(user.id)
+
+       return { token, user }
     }
 }

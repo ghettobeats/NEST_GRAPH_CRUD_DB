@@ -42,6 +42,8 @@ type Mutation {
 input CreateItemInput {
   """name"""
   name: String!
+
+  """Cantidad"""
   quantity: Float!
   quantityUnits: String
 }

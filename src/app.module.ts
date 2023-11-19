@@ -15,13 +15,13 @@ import { AuthModule } from './auth/auth.module';
 @Module({  
   imports: [
     ConfigModule.forRoot(),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRoot<ApolloDriverConfig>({ //Apollo config
       driver: ApolloDriver, 
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       autoSchemaFile: join(process.cwd(), 'src/schema.gql')
     }),
-    TypeOrmModule.forRoot({
+    TypeOrmModule.forRoot({ //DATABASE Configuration
       type: 'postgres',
       host: 'localhost',
       port: +process.env.DB_PORT, //+ para convertir a int
