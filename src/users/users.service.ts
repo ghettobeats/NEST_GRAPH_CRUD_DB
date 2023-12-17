@@ -5,6 +5,8 @@ import { User } from './entities/user.entity';
 import { SignupInput } from 'src/auth/dto/inputs/signup.input';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { threadId } from 'worker_threads';
+import { roles } from '../auth/enums/valid-role.enum';
 
 @Injectable()
 export class UsersService {
@@ -31,8 +33,13 @@ export class UsersService {
    }
   }
 
-  async findAll(): Promise<User[]> {
-    return [];
+  async findAll(roles: roles[]): Promise<User[]> {
+    if (roles.length == 0 ) return this.userRepository.find();
+    return this.userRepository
+            .createQueryBuilder()
+            .where('ARRAY[roles] && ARRAY[:...roles]  ')
+            .setParameter('roles', roles)
+            .getMany()
   }
 
   async findOneByEmail(email: string) : Promise<User>{

@@ -25,9 +25,15 @@ type AuthResponse {
 type Query {
   items: [Item!]!
   item(id: ID!): Item!
-  users: [User!]!
+  users(roles: [roles!] = []): [User!]!
   user(id: ID!): User!
   revalidate: AuthResponse!
+}
+
+enum roles {
+  admin
+  user
+  superUser
 }
 
 type Mutation {
