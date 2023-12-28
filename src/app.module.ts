@@ -24,7 +24,7 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRoot({ //DATABASE Configuration
       type: 'postgres',
       host: 'localhost',
-      port: +process.env.DB_PORT, //+ para convertir a int
+      port: + process.env.DB_PORT, //+ para convertir a int
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,

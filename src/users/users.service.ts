@@ -5,7 +5,6 @@ import { User } from './entities/user.entity';
 import { SignupInput } from 'src/auth/dto/inputs/signup.input';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { threadId } from 'worker_threads';
 import { roles } from '../auth/enums/valid-role.enum';
 
 @Injectable()
@@ -69,8 +68,11 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  block(id: string): Promise<User> {
-    throw new Error('method block not implement yet');
+  async block(id: string): Promise<User> {
+    const userToBlock = await this.findOneById(id);
+    userToBlock.isActive = false;
+    return await this.userRepository.save(userToBlock);
+    //throw new Error('method block not implement yet');
   }
    private handlerDBErrors(error: any): never{
   
