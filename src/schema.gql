@@ -15,6 +15,7 @@ type User {
   email: String!
   roles: [String!]!
   isActive: Boolean!
+  lastUpdateBy: User
 }
 
 type AuthResponse {
@@ -40,6 +41,7 @@ type Mutation {
   createItem(createItemInput: CreateItemInput!): Item!
   updateItem(updateItemInput: UpdateItemInput!): Item!
   removeItem(id: ID!): Item!
+  UpdateUser(updateUserInput: UpdateUserInput!): User!
   block_user(id: ID!): User!
   signup(signup: SignupInput!): AuthResponse!
   login(loginInput: LoginInput!): AuthResponse!
@@ -59,6 +61,15 @@ input UpdateItemInput {
   quantity: Float
   quantityUnits: String
   id: ID!
+}
+
+input UpdateUserInput {
+  email: String
+  fullName: String
+  password: String
+  id: ID!
+  role: [roles!]
+  isActive: Boolean
 }
 
 input SignupInput {

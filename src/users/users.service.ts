@@ -6,6 +6,7 @@ import { SignupInput } from 'src/auth/dto/inputs/signup.input';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { roles } from '../auth/enums/valid-role.enum';
+import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 @Injectable()
 export class UsersService {
@@ -33,7 +34,13 @@ export class UsersService {
   }
 
   async findAll(roles: roles[]): Promise<User[]> {
-    if (roles.length == 0 ) return this.userRepository.find();
+      if (roles.length == 0 ) return this.userRepository.find(
+        //!No es necesario porque uso lazy en la propiedad de lastUpdateBy
+        //{relations: {
+        //   lastUpdateBy: true
+        // }} 
+        );
+     
     return this.userRepository
             .createQueryBuilder()
             .where('ARRAY[roles] && ARRAY[:...roles]  ')
@@ -64,13 +71,29 @@ export class UsersService {
   async findOne(id: string) : Promise<User>{
   throw new Error('method block not implement yet');
   }
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+
+  async update(
+    id: string, 
+    updateUserInput: UpdateUserInput,
+     updateBy: User): Promise<User> {
+      try {
+        const user = await this.userRepository.preload({
+          ...updateUserInput, 
+          id
+        });      
+      user.lastUpdateBy = updateBy;
+      return await this.userRepository.save(user)
+
+      
+    } catch (error) {
+      this.handlerDBErrors(error);
+    }
   }
 
-  async block(id: string): Promise<User> {
+  async block(id: string, admin: User): Promise<User> {
     const userToBlock = await this.findOneById(id);
     userToBlock.isActive = false;
+    userToBlock.lastUpdateBy = admin
     return await this.userRepository.save(userToBlock);
     //throw new Error('method block not implement yet');
   }

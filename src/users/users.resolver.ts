@@ -7,6 +7,7 @@ import { rolesArgs } from './dto/args/roles.args';
 import { jwtAuthguard } from '../auth/guards/jwt.auth.guard';
 import { CurrentUser } from '../auth/decorator/current-user.decorator';
 import { roles } from 'src/auth/enums/valid-role.enum';
+import { UpdateUserInput } from './dto/inputs';
 
 
 
@@ -31,14 +32,18 @@ export class UsersResolver {
     return this.usersService.findOneById(id);
   }
 
-  // @Mutation(() => User)
-  // updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-  //   return this.usersService.update(updateUserInput.id, updateUserInput);
-  // }
+  @Mutation(() => User, {name: 'UpdateUser'})
+  async updateUser(
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+    @CurrentUser([roles.admin]) user: User
+    ): Promise<User> {   
+      //const {id} = updateUserInput desectruturacion TS  
+    return this.usersService.update(updateUserInput.id, updateUserInput, user);
+  }
 
   @Mutation(() => User, {name: "block_user"})
   block(@Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
         @CurrentUser([roles.admin]) user: User) {
-    return this.usersService.block(id);
+    return this.usersService.block(id,user);
   }
 }
