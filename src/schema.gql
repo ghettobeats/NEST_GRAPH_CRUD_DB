@@ -2,13 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Item {
-  id: ID!
-  name: String!
-  quantity: Float!
-  quantityUnits: String
-}
-
 type User {
   id: ID!
   fullName: String!
@@ -16,6 +9,14 @@ type User {
   roles: [String!]!
   isActive: Boolean!
   lastUpdateBy: User
+  items: [Item!]!
+}
+
+type Item {
+  id: ID!
+  name: String!
+  quantityUnits: String
+  user: User!
 }
 
 type AuthResponse {
@@ -24,11 +25,11 @@ type AuthResponse {
 }
 
 type Query {
-  items: [Item!]!
-  item(id: ID!): Item!
+  revalidate: AuthResponse!
   users(roles: [roles!] = []): [User!]!
   user(id: ID!): User!
-  revalidate: AuthResponse!
+  items: [Item!]!
+  item(id: ID!): Item!
 }
 
 enum roles {
@@ -38,38 +39,13 @@ enum roles {
 }
 
 type Mutation {
+  signup(signup: SignupInput!): AuthResponse!
+  login(loginInput: LoginInput!): AuthResponse!
+  UpdateUser(updateUserInput: UpdateUserInput!): User!
+  block_user(id: ID!): User!
   createItem(createItemInput: CreateItemInput!): Item!
   updateItem(updateItemInput: UpdateItemInput!): Item!
   removeItem(id: ID!): Item!
-  UpdateUser(updateUserInput: UpdateUserInput!): User!
-  block_user(id: ID!): User!
-  signup(signup: SignupInput!): AuthResponse!
-  login(loginInput: LoginInput!): AuthResponse!
-}
-
-input CreateItemInput {
-  """name"""
-  name: String!
-
-  """Cantidad"""
-  quantity: Float!
-  quantityUnits: String
-}
-
-input UpdateItemInput {
-  name: String!
-  quantity: Float
-  quantityUnits: String
-  id: ID!
-}
-
-input UpdateUserInput {
-  email: String
-  fullName: String
-  password: String
-  id: ID!
-  role: [roles!]
-  isActive: Boolean
 }
 
 input SignupInput {
@@ -81,4 +57,26 @@ input SignupInput {
 input LoginInput {
   email: String!
   password: String!
+}
+
+input UpdateUserInput {
+  email: String
+  fullName: String
+  password: String
+  id: ID!
+  role: [roles!]
+  isActive: Boolean
+}
+
+input CreateItemInput {
+  """name"""
+  name: String!
+  quantityUnits: String
+}
+
+input UpdateItemInput {
+  name: String!
+  quantityUnits: String
+  id: ID!
+  quantity: Float
 }

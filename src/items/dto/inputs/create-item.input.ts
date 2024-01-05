@@ -8,12 +8,13 @@ export class CreateItemInput {
   @IsString()
   name: string;
 
-  @Field(()=> Float, {description: 'Cantidad'})
-  @IsPositive()
-  quantity: number
+  // @Field(()=> Float, {description: 'Cantidad'})
+  // @IsPositive()
+  // quantity: number
 
   @Field(()=> String, {nullable: true})
   @IsString()
   @IsOptional()
   quantityUnits?: string
+  
 }

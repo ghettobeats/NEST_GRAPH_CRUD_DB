@@ -22,7 +22,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       useFactory: (configServices: ConfigService)=>({
           secret: configServices.get('SECRET'),
           signOptions:{
-            expiresIn: '1h'
+            expiresIn: '6h'
           }}),
             }),
     UsersModule
