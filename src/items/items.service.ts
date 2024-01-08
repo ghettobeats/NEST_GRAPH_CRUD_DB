@@ -18,14 +18,24 @@ export class ItemsService {
     return await this.itemsRepository.save(item);
   }
 
- async findAll() : Promise<Item[]>{
-    return await this.itemsRepository.find();
+ async findAll(
+  user: User
+ ) : Promise<Item[]>{
+    return await this.itemsRepository.find({
+       where: {
+        user: {
+          id: user.id
+        }
+       }
+    });
   }
 
-  async findOne(id: string) : Promise<Item>{
-    const item = await this.itemsRepository.findOneBy({id})
+  async findOne(id: string, user :User) : Promise<Item>{
+    const item = await this.itemsRepository.findOneBy({id, user:{id : user.id}})
     if(!item)
     throw new NotFoundException(`not found ${id}`)
+
+    //item.user = user; forma no muy opcional de hacer la forma es usar lazy en la entidad...
     return item
   }
 
@@ -38,8 +48,8 @@ export class ItemsService {
     return this.itemsRepository.save(item);
   }
 
-  async remove(id: string): Promise<Item> {
-    const item = await this.findOne(id);
+  async remove(id: string, user: User): Promise<Item> {
+    const item = await this.findOne(id, user);
     await this.itemsRepository.remove(item);
     return item;
   }

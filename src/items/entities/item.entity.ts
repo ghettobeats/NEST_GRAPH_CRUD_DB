@@ -24,7 +24,7 @@ export class Item {
    quantityUnits?: string
 
 
-  @ManyToOne(()=> User, (user) => user.items, {nullable: false})
+  @ManyToOne(()=> User, (user) => user.items, {nullable: false, lazy: true})
   @Index('userId-index')//Añadir un indice en esta columna 
   @Field(()=> User)
   user: User
