@@ -25,7 +25,7 @@ export class Item {
 
 
   @ManyToOne(()=> User, (user) => user.items, {nullable: false})
-  @Index()//Añadir un indice en esta columna 
+  @Index('userId-index')//Añadir un indice en esta columna 
   @Field(()=> User)
   user: User
 

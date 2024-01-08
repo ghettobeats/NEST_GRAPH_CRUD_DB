@@ -14,7 +14,7 @@ export class ItemsService {
     private readonly itemsRepository: Repository<Item>){}
 
   async create(createItemInput: CreateItemInput, user: User) : Promise<Item>{
-    const item = this.itemsRepository.create(createItemInput);
+    const item = this.itemsRepository.create({...createItemInput, user});
     return await this.itemsRepository.save(item);
   }
 

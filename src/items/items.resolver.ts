@@ -8,14 +8,14 @@ import { CurrentUser } from 'src/auth/decorator/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 
 @Resolver(() => Item)
-@UseGuards(jwtAuthguard)
+@UseGuards(jwtAuthguard) //autenticacion de usuario
 export class ItemsResolver {
   constructor(private readonly itemsService: ItemsService) {}
 
   @Mutation(() => Item)
   async createItem(
     @Args('createItemInput') createItemInput: CreateItemInput,
-    @CurrentUser() user:User
+    @CurrentUser() user:User //Saber que usuario esta mandando la peticion
     ) : Promise<Item>{
     return this.itemsService.create(createItemInput, user);
   }
