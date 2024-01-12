@@ -34,14 +34,15 @@ export class ItemsService {
     const item = await this.itemsRepository.findOneBy({id, user:{id : user.id}})
     if(!item)
     throw new NotFoundException(`not found ${id}`)
-
-    //item.user = user; forma no muy opcional de hacer la forma es usar lazy en la entidad...
+    //?item.user = user; forma no muy opcional de hacer la forma es usar lazy en la entidad...
     return item
   }
 
- async update(id: string, updateItemInput: UpdateItemInput) : Promise<Item>{
+ async update(id: string, updateItemInput: UpdateItemInput, user:User) : Promise<Item>{
 
-  const item = await this.itemsRepository.preload(updateItemInput)
+  await this.findOne(id, user);
+  //? Como seria sin lazy en la entidad .preload({updateItemImput, user})
+  const item = await this.itemsRepository.preload(updateItemInput);
   if(!item) 
   throw new NotFoundException(`not found ${id}`)
 
@@ -53,4 +54,6 @@ export class ItemsService {
     await this.itemsRepository.remove(item);
     return item;
   }
+
+
 }

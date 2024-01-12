@@ -13,7 +13,7 @@ export class Item {
 
   @Column()
   @Field(()=> String)
-  name : string
+  name: string
 
   //  @Column()
   //  @Field(()=> Float)

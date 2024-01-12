@@ -78,5 +78,4 @@ input UpdateItemInput {
   name: String!
   quantityUnits: String
   id: ID!
-  quantity: Float
 }
