@@ -55,5 +55,15 @@ export class ItemsService {
     return item;
   }
 
+  //?conteo de items por usuarios
+ async countItemByUser(user: User): Promise<number>{
+ return this.itemsRepository.count({
+  where: {
+      user: {
+        id: user.id
+      }
+  }
+})
+}
 
 }

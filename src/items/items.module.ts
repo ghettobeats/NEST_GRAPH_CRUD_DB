@@ -6,6 +6,7 @@ import { Item } from './entities/item.entity';
 
 @Module({
   providers: [ItemsResolver, ItemsService],
-  imports: [TypeOrmModule.forFeature([Item])]
+  imports: [TypeOrmModule.forFeature([Item])],
+  exports: [ItemsService, TypeOrmModule] //!Si exporto un servicio necesito importarlo en el modulo que lo va a usar ejemplo users.module
 })
 export class ItemsModule {}
