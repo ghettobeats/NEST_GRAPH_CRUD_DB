@@ -47,6 +47,9 @@ type Mutation {
   createItem(createItemInput: CreateItemInput!): Item!
   updateItem(updateItemInput: UpdateItemInput!): Item!
   removeItem(id: ID!): Item!
+
+  """Setear data a una base de datos """
+  SeedData: Boolean!
 }
 
 input SignupInput {

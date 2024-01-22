@@ -10,6 +10,7 @@ import { ItemsModule } from '../items/items.module';
   imports: [TypeOrmModule.forFeature([User]), ItemsModule], //!necesitas exportar el modulo para importarlo ejemplo el ItemsModulo
   //!para exportar mis servicios a otros modulos
   exports: [
+    TypeOrmModule,
     UsersService
   ]
 })
