@@ -1,11 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../users/entities/user.entity';
-import { UsersService } from 'src/users/users.service';
-import { Item } from '../items/entities/item.entity';
 import { Repository } from 'typeorm';
-import { SEED_USERS } from './data_seed/seed-data';
+
+import { User } from '../users/entities/user.entity';
+import { Item } from '../items/entities/item.entity';
+import { SEED_ITEMS, SEED_USERS } from './data_seed/seed-data';
+
+import { UsersService } from '../users/users.service';
+import { ItemsService } from 'src/items/items.service';
 
 @Injectable()
 export class SeedService {
@@ -18,7 +21,8 @@ constructor(
     private readonly itemRepository: Repository<Item>,
     @InjectRepository(User) 
     private readonly userRepository: Repository<User>,
-    private readonly userService: UsersService
+    private readonly userService: UsersService,
+    private readonly itemService: ItemsService
     
     ) {
 this.isProd = configureService.get('STATE') === 'prod'
@@ -30,9 +34,10 @@ async executeSeed(){
         throw new UnauthorizedException('We cannot run SEED on PROD')
     }
     
-    this.deleteDB();    
+    await this.deleteDB();    
     const user  = await this.loadUser();
     //TODO: crear item
+    await this.loadItems(user);
 
 
 
@@ -56,6 +61,13 @@ for(const user of SEED_USERS){
     users.push(this.userService.create(user))
 }
 return users[0]
+}
+async loadItems(user: User): Promise<void>{
+    const itemsPromises = [];
+    for(const item of SEED_ITEMS){
+        itemsPromises.push(this.itemService.create(item, user))
+    }
+  await Promise.all(itemsPromises)
 }
 
 }
