@@ -6,6 +6,7 @@ import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { jwtAuthguard } from '../auth/guards/jwt.auth.guard';
 import { CurrentUser } from 'src/auth/decorator/current-user.decorator';
 import { User } from '../users/entities/user.entity';
+import { PaginationArgs } from 'src/common/dto/args/pagination.args';
 
 @Resolver(() => Item)
 @UseGuards(jwtAuthguard) //autenticacion de usuario
@@ -15,15 +16,17 @@ export class ItemsResolver {
   @Mutation(() => Item)
   async createItem(
     @Args('createItemInput') createItemInput: CreateItemInput,
-    @CurrentUser() user:User //Saber que usuario esta mandando la peticion
-    ) : Promise<Item>{
+    @CurrentUser() user:User,//Saber que usuario esta mandando la peticion    
+    ) : Promise<Item>{      
     return this.itemsService.create(createItemInput, user);
   }
 
   @Query(() => [Item], { name: 'items' })
   async findAll(
-    @CurrentUser() user: User 
+    @CurrentUser() user: User, 
+    @Args() paginationArgs: PaginationArgs
   ):Promise<Item[]>{
+    console.log(paginationArgs)
     return this.itemsService.findAll(user);
   }
 
