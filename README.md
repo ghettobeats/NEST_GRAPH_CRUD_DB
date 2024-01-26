@@ -42,3 +42,5 @@ yarn start:dev o npm run start:dev
 ```
 localhost:3000
 ```
+
+7. Ejecutar la __"mutation"__ seedData, para llenar la base de datos con informacion.
