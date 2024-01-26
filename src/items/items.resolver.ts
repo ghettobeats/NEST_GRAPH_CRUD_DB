@@ -3,10 +3,11 @@ import { ItemsService } from './items.service';
 import { Item } from './entities/item.entity';
 import { CreateItemInput, UpdateItemInput } from './dto/inputs';
 import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
+
 import { jwtAuthguard } from '../auth/guards/jwt.auth.guard';
-import { CurrentUser } from 'src/auth/decorator/current-user.decorator';
+import { CurrentUser } from '../auth/decorator/current-user.decorator';
 import { User } from '../users/entities/user.entity';
-import { PaginationArgs } from 'src/common/dto/args/pagination.args';
+import { PaginationArgs } from '../common/dto/args/pagination.args';
 
 @Resolver(() => Item)
 @UseGuards(jwtAuthguard) //autenticacion de usuario
@@ -25,9 +26,8 @@ export class ItemsResolver {
   async findAll(
     @CurrentUser() user: User, 
     @Args() paginationArgs: PaginationArgs
-  ):Promise<Item[]>{
-    console.log(paginationArgs)
-    return this.itemsService.findAll(user);
+  ):Promise<Item[]>{  
+    return this.itemsService.findAll(user,paginationArgs);
   }
 
   @Query(() => Item, { name: 'item' })
