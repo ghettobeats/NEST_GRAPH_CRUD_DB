@@ -25,10 +25,18 @@ export class ItemsService {
  ) : Promise<Item[]>{
   const {limit, offset} = paginationArgs;
   const {search} = searchArgs;
-
+  //!https://typeorm.io/select-query-builder
+  const queryBuilder =  await this.itemsRepository.createQueryBuilder("item")
+  .take(limit)
+  .skip(offset)
+  .where(`"userId" = :userId`, {userId: user.id});
     
+    if(search){     
+      queryBuilder.andWhere('LOWER(name) = :name', {name: `%${search.toLowerCase()}%`});
+    }
 
-    // return await this.itemsRepository.find({
+  return queryBuilder.getMany()
+    // return await this.itemsRepository.find({ 
     // take: limit,
     // skip: offset,
     //    where: {    
