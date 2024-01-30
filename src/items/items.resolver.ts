@@ -29,6 +29,7 @@ export class ItemsResolver {
     @Args() paginationArgs: PaginationArgs, //enviar dos args lanzara un error que se arregla en el main 
     @Args() searchArgs: SearchArgs
   ):Promise<Item[]> {
+    
     return this.itemsService.findAll(user,paginationArgs, searchArgs); 
   }
   
