@@ -8,7 +8,7 @@ async function bootstrap() {
 app.useGlobalPipes(
 new ValidationPipe({
 whitelist: true,
-forbidNonWhitelisted: true,
+//forbidNonWhitelisted: true, //Esto es solo para las rest api evita que se envien informacion adicional graph no lo necesita 
 })
 )
   await app.listen(3000);
