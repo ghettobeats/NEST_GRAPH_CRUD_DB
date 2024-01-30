@@ -9,6 +9,8 @@ import { CurrentUser } from '../auth/decorator/current-user.decorator';
 import { roles } from 'src/auth/enums/valid-role.enum';
 import { UpdateUserInput } from './dto/inputs';
 import { ItemsService } from '../items/items.service';
+import { Item } from '../items/entities/item.entity';
+import { PaginationArgs, SearchArgs } from '../common/dto/args';
 
 
 
@@ -55,4 +57,16 @@ export class UsersResolver {
   ): Promise<number>{
     return this.itemService.countItemByUser(user);
   }
+
+  @ResolveField(()=> [Item], {name: 'items'})
+  async getItemByUser(
+    @CurrentUser([roles.admin]) adminUser: User,
+    @Parent() user: User,
+    @Args() paginationArgs: PaginationArgs,
+    @Args() searchArgs: SearchArgs
+  ): Promise<Item[]>{
+    return this.itemService.findAll(user, paginationArgs, searchArgs);
+  }
+
+
 }
