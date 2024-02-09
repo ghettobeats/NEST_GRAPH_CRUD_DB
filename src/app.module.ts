@@ -13,6 +13,8 @@ import { AuthModule } from './auth/auth.module';
 import { JwtService } from '@nestjs/jwt';
 import { SeedModule } from './seed/seed.module';
 import { CommonModule } from './common/common.module';
+import { ListModule } from './list/list.module';
+import { List } from './list/entities/list.entity';
 
 
 @Module({  
@@ -50,14 +52,15 @@ import { CommonModule } from './common/common.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Item,User],
+      entities: [Item,User,List],
       synchronize: true,
     }),
     ItemsModule,
     UsersModule,
     AuthModule,
     SeedModule,
-    CommonModule ],
+    CommonModule,
+    ListModule ],
   controllers: [],
   providers: [],
 })

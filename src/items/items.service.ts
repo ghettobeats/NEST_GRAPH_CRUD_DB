@@ -21,7 +21,9 @@ export class ItemsService {
   }
 
  async findAll(
-  user: User, paginationArgs: PaginationArgs, searchArgs: SearchArgs
+  user: User, 
+  paginationArgs: PaginationArgs,
+  searchArgs: SearchArgs
  ) : Promise<Item[]>{
   const {limit, offset} = paginationArgs;
   const {search} = searchArgs;
@@ -75,7 +77,7 @@ export class ItemsService {
 
   //?conteo de items por usuarios
  async countItemByUser(user: User): Promise<number>{
- return this.itemsRepository.count({
+ return await this.itemsRepository.count({
   where: {
       user: {
         id: user.id
