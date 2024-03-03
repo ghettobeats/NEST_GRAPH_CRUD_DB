@@ -27,7 +27,6 @@ export class ListService {
     .offset(offset)
     .limit(limit)
     .where(`"userId" = :userId`, {userId: user.id});
-    console.log(queryBuilder)
     if(search){     
       queryBuilder.andWhere('LOWER(name) like :name', {name: `%${search.toLowerCase()}%`});
     }
