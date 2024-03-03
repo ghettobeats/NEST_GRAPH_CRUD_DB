@@ -15,6 +15,7 @@ import { SeedModule } from './seed/seed.module';
 import { CommonModule } from './common/common.module';
 import { ListModule } from './list/list.module';
 import { List } from './list/entities/list.entity';
+import { ListItemsModule } from './list-items/list-items.module';
 
 
 @Module({  
@@ -60,7 +61,8 @@ import { List } from './list/entities/list.entity';
     AuthModule,
     SeedModule,
     CommonModule,
-    ListModule ],
+    ListModule,
+    ListItemsModule ],
   controllers: [],
   providers: [],
 })

@@ -55,7 +55,7 @@ export class ListService {
       throw new NotFoundException(`not found ${id}`)
     return this.listRepository.save(list);
   }
-//!Realmente deberia ser un update no un remove....
+//!Realmente deberia ser un update no un remove por lo de la auditoria....
   async remove(id: string,user:User): Promise<List>{
     const item = await this.findOne(id, user);
     await this.listRepository.remove(item);
