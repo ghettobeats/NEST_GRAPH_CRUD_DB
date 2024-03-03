@@ -16,6 +16,7 @@ import { CommonModule } from './common/common.module';
 import { ListModule } from './list/list.module';
 import { List } from './list/entities/list.entity';
 import { ListItemsModule } from './list-items/list-items.module';
+import { ListItem } from './list-items/entities/list-item.entity';
 
 
 @Module({  
@@ -53,7 +54,7 @@ import { ListItemsModule } from './list-items/list-items.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Item,User,List],
+      entities: [Item,User,List,ListItem],
       synchronize: true,
     }),
     ItemsModule,

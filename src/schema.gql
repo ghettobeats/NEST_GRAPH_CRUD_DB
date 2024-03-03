@@ -2,12 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type List {
-  id: ID!
-  name: String!
-  user: User!
-}
-
 type User {
   id: ID!
   fullName: String!
@@ -21,11 +15,26 @@ type User {
   listas(offset: Int = 0, limit: Int = 10, search: String): [List!]!
 }
 
+type List {
+  id: ID!
+  name: String!
+  user: User!
+  listItem: [ListItem!]!
+}
+
+type ListItem {
+  id: ID!
+  quantity: Float!
+  completed: Boolean!
+  list: List!
+}
+
 type Item {
   id: ID!
   name: String!
   quantityUnits: String
   user: User!
+  listItem: [ListItem!]!
 }
 
 type AuthResponse {
@@ -41,6 +50,7 @@ type Query {
   item(id: ID!): Item!
   listas(offset: Int = 0, limit: Int = 10, search: String): [List!]!
   lista(id: String!): List!
+  listItems: [ListItem!]!
 }
 
 enum roles {
@@ -63,6 +73,7 @@ type Mutation {
 
   """Setear data a una base de datos """
   SeedData: Boolean!
+  createListItem(createListItemInput: CreateListItemInput!): ListItem!
 }
 
 input SignupInput {
@@ -105,4 +116,11 @@ input CreateListInput {
 input UpdateListInput {
   name: String!
   id: ID!
+}
+
+input CreateListItemInput {
+  quantity: Float = 0
+  completed: Boolean = false
+  listId: ID!
+  itemId: ID!
 }
