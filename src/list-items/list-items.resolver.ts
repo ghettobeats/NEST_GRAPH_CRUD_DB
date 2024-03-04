@@ -18,10 +18,10 @@ export class ListItemsResolver {
     return this.listItemsService.create(createListItemInput);
   }
 
-  @Query(() => [ListItem], { name: 'listItems' })
-  findAll() {
-    return this.listItemsService.findAll();
-  }
+  // @Query(() => [ListItem], { name: 'listItems' })
+  // findAll() {
+  //   return this.listItemsService.findAll();
+  // }
 
   // @Query(() => ListItem, { name: 'listItem' })
   // findOne(@Args('id', { type: () => Int }) id: number) {

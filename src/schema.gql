@@ -19,7 +19,8 @@ type List {
   id: ID!
   name: String!
   user: User!
-  listItem: [ListItem!]!
+  Items(offset: Int = 0, limit: Int = 10, search: String): [ListItem!]!
+  TotalItems: Float!
 }
 
 type ListItem {
@@ -27,6 +28,7 @@ type ListItem {
   quantity: Float!
   completed: Boolean!
   list: List!
+  item: Item!
 }
 
 type Item {
@@ -50,7 +52,6 @@ type Query {
   item(id: ID!): Item!
   listas(offset: Int = 0, limit: Int = 10, search: String): [List!]!
   lista(id: String!): List!
-  listItems: [ListItem!]!
 }
 
 enum roles {
@@ -70,10 +71,10 @@ type Mutation {
   CrearLista(createListInput: CreateListInput!): List!
   updateList(updateListInput: UpdateListInput!): List!
   removeList(id: String!): List!
+  createListItem(createListItemInput: CreateListItemInput!): ListItem!
 
   """Setear data a una base de datos """
   SeedData: Boolean!
-  createListItem(createListItemInput: CreateListItemInput!): ListItem!
 }
 
 input SignupInput {
