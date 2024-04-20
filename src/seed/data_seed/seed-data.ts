@@ -21,7 +21,11 @@ export const SEED_USERS = [
         isActive: false
     },
 ]
-
+export const SEED_LIST = [
+    {name: 'Supermercado'},
+    {name: 'Escuela'},
+    {name: 'Casa'}
+]
 export const SEED_ITEMS = [
     {
         name: "Chicken breast (skinless,boneless)",
