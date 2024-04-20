@@ -28,10 +28,10 @@ export class ListItemsResolver {
     return this.listItemsService.findOne(id);
   }
 
-  // @Mutation(() => ListItem)
-  // updateListItem(@Args('updateListItemInput') updateListItemInput: UpdateListItemInput) {
-  //   return this.listItemsService.update(updateListItemInput.id, updateListItemInput);
-  // }
+  @Mutation(() => ListItem)
+  async updateListItem(@Args('updateListItemInput') updateListItemInput: UpdateListItemInput): Promise<ListItem> {
+    return this.listItemsService.update(updateListItemInput.id, updateListItemInput);
+  }
 
   // @Mutation(() => ListItem)
   // removeListItem(@Args('id', { type: () => Int }) id: number) {

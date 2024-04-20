@@ -73,6 +73,7 @@ type Mutation {
   updateList(updateListInput: UpdateListInput!): List!
   removeList(id: String!): List!
   createListItem(createListItemInput: CreateListItemInput!): ListItem!
+  updateListItem(updateListItemInput: UpdateListItemInput!): ListItem!
 
   """Setear data a una base de datos """
   SeedData: Boolean!
@@ -125,4 +126,12 @@ input CreateListItemInput {
   completed: Boolean = false
   listId: ID!
   itemId: ID!
+}
+
+input UpdateListItemInput {
+  quantity: Float = 0
+  completed: Boolean = false
+  listId: ID
+  itemId: ID
+  id: ID!
 }
