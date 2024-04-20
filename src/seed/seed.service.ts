@@ -8,7 +8,9 @@ import { Item } from '../items/entities/item.entity';
 import { SEED_ITEMS, SEED_USERS } from './data_seed/seed-data';
 
 import { UsersService } from '../users/users.service';
-import { ItemsService } from 'src/items/items.service';
+import { ItemsService } from '../items/items.service';
+import { ListItem } from '../list-items/entities/list-item.entity';
+import { List } from '../list/entities/list.entity';
 
 @Injectable()
 export class SeedService {
@@ -21,6 +23,10 @@ constructor(
     private readonly itemRepository: Repository<Item>,
     @InjectRepository(User) 
     private readonly userRepository: Repository<User>,
+     @InjectRepository(ListItem) 
+    private readonly listItemRepository: Repository<ListItem>,
+     @InjectRepository(List) 
+    private readonly listRepository: Repository<List>,
     private readonly userService: UsersService,
     private readonly itemService: ItemsService
     
@@ -44,11 +50,24 @@ async executeSeed(){
     return true;
 }
 async deleteDB(){
+
+
+    // delete listItem
+await this.listItemRepository.createQueryBuilder()
+    .delete()
+    .where({})
+    .execute();
+    // delelte list
+await this.listRepository.createQueryBuilder()
+    .delete()
+    .where({})
+    .execute();
+    // delete items
     await this.itemRepository.createQueryBuilder()
     .delete()
     .where({})
     .execute();
-
+    // delete users
     await this.userRepository.createQueryBuilder()
     .delete()
     .where({})
