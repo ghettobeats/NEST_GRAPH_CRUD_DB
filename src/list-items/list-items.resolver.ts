@@ -3,7 +3,7 @@ import { ListItemsService } from './list-items.service';
 import { ListItem } from './entities/list-item.entity';
 import { CreateListItemInput } from './dto/create-list-item.input';
 import { UpdateListItemInput } from './dto/update-list-item.input';
-import { UseGuards } from '@nestjs/common';
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { jwtAuthguard } from 'src/auth/guards/jwt.auth.guard';
 
 @Resolver(() => ListItem)
@@ -23,10 +23,10 @@ export class ListItemsResolver {
   //   return this.listItemsService.findAll();
   // }
 
-  // @Query(() => ListItem, { name: 'listItem' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.listItemsService.findOne(id);
-  // }
+  @Query(() => ListItem, { name: 'listItem' })
+ async findOne(@Args('id', { type: () => String }, ParseUUIDPipe) id: string): Promise<ListItem>{
+    return this.listItemsService.findOne(id);
+  }
 
   // @Mutation(() => ListItem)
   // updateListItem(@Args('updateListItemInput') updateListItemInput: UpdateListItemInput) {

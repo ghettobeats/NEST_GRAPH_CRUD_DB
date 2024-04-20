@@ -52,6 +52,7 @@ type Query {
   item(id: ID!): Item!
   listas(offset: Int = 0, limit: Int = 10, search: String): [List!]!
   lista(id: String!): List!
+  listItem(id: String!): ListItem!
 }
 
 enum roles {
