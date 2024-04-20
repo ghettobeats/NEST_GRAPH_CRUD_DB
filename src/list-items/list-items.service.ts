@@ -21,7 +21,8 @@ export class ListItemsService {
   item:{id:itemId},
   list:{ id: listId}
     })
-    return this.listItemRepository.save(record);
+    await this.listItemRepository.save(record);
+    return await this.findOne(record.id)
   }
 
   async findAll(
